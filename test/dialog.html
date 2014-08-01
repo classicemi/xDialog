@@ -7,7 +7,7 @@
 	</head>
 	<body>
 
-		<div class="xdialog-wrapper">
+		<!-- <div class="xdialog-wrapper">
 			<div class="xdialog">
 				<div class="xdialog-main">
 					<div class="xdialog-header">
@@ -25,7 +25,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 		<button class="show-message">show message</button>
 		<a href="#nogo" class="show-tip">show tip</a>
@@ -34,7 +34,13 @@
 		<script src="../src/xDialog.js"></script>
 		<script>
 			$('.show-message').click(function() {
-				var d = xDialog();
+				var d = xDialog({
+					type: 'message',
+					title: '这是我的标题',
+					content: '这是我的内容，这也是我的内容',
+					width: 1,
+					height: 1
+				});
 				d.show();
 			});
 
