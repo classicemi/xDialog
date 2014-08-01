@@ -1,0 +1,37 @@
+.xdialog-wrapper {
+  position: absolute;
+  left: 300px;
+  top: 300px;
+  bottom: auto;
+  right: auto;
+}
+
+.xdialog {
+  position: relative;
+  font-family: arial, tahoma, \5b8b\4f53;
+  background-color: #fff;
+  border: 1px solid #333; 
+}
+
+.xdialog-header {
+  border-bottom: #e5e5e5;
+  background-color: #ccc;
+}
+
+.xdialog-close {
+  position: relative;
+  float: right;
+}
+
+.xdialog-title {
+  padding: 10px;
+}
+
+.xdialog-content {
+  white-space: nowrap;
+}
+
+.xdialog-body {
+  padding: 20px;
+  text-align: center;
+}

@@ -3,13 +3,44 @@
 	<head>
 	<meta charset="utf-8" />
 		<title>xDialog</title>
+		<link rel="stylesheet" type="text/css" href="../css/xdialog.css" />
 	</head>
 	<body>
+
+		<div class="xdialog-wrapper">
+			<div class="xdialog">
+				<div class="xdialog-main">
+					<div class="xdialog-header">
+						<button class="xdialog-close">&#215;</button>
+						<div class="xdialog-title">标题文字</div>
+					</div>
+					<div class="xdialog-body">
+						<div class="xdialog-content">这是一段测试文字，1234567，asdfghjkl，&*^(*^(</div>
+					</div>
+					<div class="xdialog-footer">
+						<div class="xdialog-button">
+							<button class="">取消</button>
+							<button class="">确定</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<button class="show-message">show message</button>
+		<a href="#nogo" class="show-tip">show tip</a>
 
 		<script src="../lib/jquery-1.10.2.js"></script>
 		<script src="../src/xDialog.js"></script>
 		<script>
+			$('.show-message').click(function() {
+				var d = xDialog();
+				d.show();
+			});
 
+			$('.show-tip').click(function() {
+				var d = xDialog()
+			});
 		</script>
 	</body>
 </html>
