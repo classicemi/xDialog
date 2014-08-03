@@ -37,9 +37,7 @@
 				var d = xDialog({
 					type: 'message',
 					title: '这是我的标题',
-					content: '这是我的内容，这也是我的内容',
-					width: 1,
-					height: 1
+					content: '这是我的内容，这也是我的内容'
 				});
 				d.show();
 			});
@@ -47,6 +45,21 @@
 			$('.show-tip').click(function() {
 				var d = xDialog()
 			});
+
+			var d = xDialog({
+					type: 'message',
+					title: '这是我的标题',
+					content: '这是我的内容，这也是我的内容',
+					cancelText: 'cancel',
+					cancelCallback: function() {
+						console.log('cancel callback');
+					},
+					okText: 'ok',
+					okCallback: function() {
+						console.log('ok callback');
+					}
+				});
+				d.show();
 		</script>
 	</body>
 </html>

@@ -2,6 +2,9 @@
 
 	var defaultOptions = {
 
+		// 标题
+		title: '',
+
 		// 窗口内容
 		content: '',
 
@@ -25,9 +28,41 @@
 		// 是否显示border
 		border: false,
 
+		// 是否显示关闭按钮
+		close: true,
+
+		// 是否显示取消按钮
+		cancel: true,
+
+		// 取消按钮文字
+		cancelText: 'cancel',
+
+		// 取消按钮回调函数
+		cancelCallback: function() {},
+
+		// 确定按钮文字
+		okText: 'ok',
+
+		// 是否显示确定按钮
+		ok: true,
+
+		// 确定按钮回调函数
+		okCallback: function() {},
+
+		// 按钮组对象
+		button: [],
+
+		// content宽度
+		width: '',
+
+		// content高度
+		height: '',
+
 		// HTML结构
 		innerHTML:
 			'<div class="xdialog">'
+			+ '<div class="xdialog-arrow-outer"></div>'
+			+ '<div class="xdialog-arrow-inner"></div>'
 			+	'<div class="xdialog-main">'
 			+		'<div class="xdialog-header">'
 			+			'<button class="xdialog-close">&#215;</button>'
@@ -38,8 +73,8 @@
 			+		'</div>'
 			+		'<div class="xdialog-footer">'
 			+			'<div class="xdialog-button">'
-			+				'<button class="">取消</button>'
-			+				'<button class="">确定</button>'
+			// +				'<button class="">取消</button>'
+			// +				'<button class="">确定</button>'
 			+			'</div>'
 			+		'</div>'
 			+	'</div>'
@@ -62,6 +97,27 @@
 
 		opt = $.extend(true, {}, defaultOptions, opt);
 
+		// 按钮组
+		// cancel按钮
+		if (opt.cancel === true) {
+			opt.button.push({
+				className: 'xdialog-button-cancel',
+				cancel: true,
+				text: opt.cancelText,
+				cb: opt.cancelCallback
+			});
+		}
+
+		// ok按钮
+		if (opt.ok === true) {
+			opt.button.push({
+				className: 'xdialog-button-ok',
+				ok: true,
+				text: opt.okText,
+				cb: opt.okCallback
+			});
+		}
+
 		// 调用实际的构造函数，传入opt
 		return new xDialog.create(opt);
 
@@ -71,9 +127,10 @@
 	xDialog.create = function(options) {
 		var that = this;
 
+		// 设置对象作为返回对象的一个属性
 		this.opt = options;
 
-		// _popup属性是一个jquery对象
+		// _popup属性是一个jquery对象，用作容器
 		this._popup = $('<div />')
 			.html(options.innerHTML)
 			.css({
@@ -82,7 +139,15 @@
 			})
 			.appendTo('body');
 
+		// 关闭按钮
+		this._popup.find('.xdialog-close')
+			.css({ 'display': this.close === false ? 'none' : '' })
+			.on('click', function(event) {
+				that.close().remove();
+			});
+
 		// 如原型对象中有对应同名的setter，则调用setter
+		// 如没有，则添加这个属性
 		$.each(options, function(k, v) {
 			if (typeof that[k] === 'function') {
 				that[k](v);
@@ -90,7 +155,6 @@
 				that[k] = v;
 			}
 		});
-
 
 		return this;
 
@@ -123,7 +187,7 @@
 			console.log(this);
 		},
 
-		// 弹层居中定位
+		// 居中定位
 		center: function() {
 			
 			var popup = this._popup,
@@ -149,7 +213,6 @@
 
 		// 设置标题
 		title: function(v) {
-			console.log(this._popup)
 			this._popup.find('.xdialog-title').html(v);
 			this._popup.find('.xdialog-header')[v ? 'show' : 'hide']();
 			return this;
@@ -163,6 +226,7 @@
 		},
 
 		// todo: 宽度和高度过小时的显示
+		// 是否使用table
 		width: function(v) {
 			this._popup.find('.xdialog-content').css('width', v);
 			return this;
@@ -173,13 +237,41 @@
 			return this;
 		},
 
+		// 设置按钮组
+		button: function(v) {
+			console.log('button', v);
+			var that = this,
+					html = '';
+
+			$.each(v, function(i, obj) {
+
+				html =
+					'<button class="'
+					+ obj.className
+					+ '">'
+					+ obj.text
+					+ '</button>';
+
+				that._popup.find('.xdialog-button')[0].innerHTML += html;
+
+			});
+		},
+
 		// 隐藏弹窗
-		hide: function() {
+		close: function() {
+
+			this._popup.hide();
+
+			return this;
 
 		},
 
 		// 删除弹窗
 		remove: function() {
+
+			this._popup.remove();
+
+			return this;
 
 		}
 
