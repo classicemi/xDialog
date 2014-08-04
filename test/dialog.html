@@ -4,62 +4,98 @@
 	<meta charset="utf-8" />
 		<title>xDialog</title>
 		<link rel="stylesheet" type="text/css" href="../css/xdialog.css" />
+		<style>
+			body {
+				background-color: #50A3D3;
+			}
+		</style>
 	</head>
 	<body>
 
-		<!-- <div class="xdialog-wrapper">
-			<div class="xdialog">
-				<div class="xdialog-main">
-					<div class="xdialog-header">
-						<button class="xdialog-close">&#215;</button>
-						<div class="xdialog-title">标题文字</div>
-					</div>
-					<div class="xdialog-body">
-						<div class="xdialog-content">这是一段测试文字，1234567，asdfghjkl，&*^(*^(</div>
-					</div>
-					<div class="xdialog-footer">
-						<div class="xdialog-button">
-							<button class="">取消</button>
-							<button class="">确定</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> -->
-
-		<button class="show-message">show message</button>
-		<a href="#nogo" class="show-tip">show tip</a>
+		<button class="message-no-button">无按钮组弹窗</button>
+		<button class="message-button">有按钮组弹窗</button>
+		<button class="message-quick-close">点击空白可关闭弹窗</button>
+		<a href="#nogo" class="bubble">气泡</a>
 
 		<script src="../lib/jquery-1.10.2.js"></script>
 		<script src="../src/xDialog.js"></script>
 		<script>
-			$('.show-message').click(function() {
+			var ok = 'ok';
+			var cancel = 'cancel';
+
+			$('.message-no-button').click(function() {
 				var d = xDialog({
 					type: 'message',
 					title: '这是我的标题',
-					content: '这是我的内容，这也是我的内容'
+					content: '这是我的内容，这也是我的内容',
+					cancel: false,
+					ok: false
 				});
 				d.show();
 			});
 
-			$('.show-tip').click(function() {
-				var d = xDialog()
+			$('.message-button').click(function() {
+				var d = xDialog({
+					type: 'message',
+					title: '这是我的标题',
+					content: '这是我的内容，这也是我的内容',
+					cancelText: '取消',
+					okText: '确定',
+					cancelCallback: function() {
+						alert(cancel);
+					},
+					okCallback: function() {
+						alert(ok);
+					}
+				});
+				d.show();
 			});
 
 			var d = xDialog({
 					type: 'message',
 					title: '这是我的标题',
 					content: '这是我的内容，这也是我的内容',
-					cancelText: 'cancel',
+					cancelText: '取消',
+					okText: '确定',
 					cancelCallback: function() {
-						console.log('cancel callback');
+						alert(cancel);
 					},
-					okText: 'ok',
 					okCallback: function() {
-						console.log('ok callback');
+						alert(ok);
 					}
 				});
 				d.show();
+
+			$('.message-quick-close').click(function() {
+				var d = xDialog({
+					type: 'message',
+					title: '这是我的标题',
+					content: '这是我的内容，这也是我的内容',
+					cancel: false,
+					ok: false,
+					close: false
+				});
+				d.show();
+			});
+
+			$('.bubble').on('', function() {
+				var d = xDialog()
+			});
+
+			// var d = xDialog({
+			// 		type: 'message',
+			// 		title: '这是我的标题',
+			// 		content: '这是我的内容，这也是我的内容',
+			// 		cancelText: 'cancel',
+			// 		cancelCallback: function() {
+			// 			console.log('cancel callback');
+			// 		},
+			// 		okText: 'ok',
+			// 		okCallback: function() {
+			// 			console.log('ok callback');
+			// 		}
+			// 	});
+			// 	d.show();
 		</script>
 	</body>
 </html>
