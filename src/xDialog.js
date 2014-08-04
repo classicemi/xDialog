@@ -58,26 +58,52 @@
 		// content高度
 		height: '',
 
+		// 点击空白关闭
+		quickClose: false,
+
 		// HTML结构
 		innerHTML:
+			// '<div class="xdialog">'
+			// + '<div class="xdialog-arrow-outer"></div>'
+			// + '<div class="xdialog-arrow-inner"></div>'
+			// +	'<div class="xdialog-main">'
+			// +		'<div class="xdialog-header">'
+			// +			'<button class="xdialog-close">&#215;</button>'
+			// +			'<div class="xdialog-title"></div>'
+			// +		'</div>'
+			// +		'<div class="xdialog-body">'
+			// +			'<div class="xdialog-content"></div>'
+			// +		'</div>'
+			// +		'<div class="xdialog-footer">'
+			// +			'<div class="xdialog-button">'
+			// // +				'<button class="">取消</button>'
+			// // +				'<button class="">确定</button>'
+			// +			'</div>'
+			// +		'</div>'
+			// +	'</div>'
+			// +'</div>'
 			'<div class="xdialog">'
 			+ '<div class="xdialog-arrow-outer"></div>'
 			+ '<div class="xdialog-arrow-inner"></div>'
-			+	'<div class="xdialog-main">'
-			+		'<div class="xdialog-header">'
-			+			'<button class="xdialog-close">&#215;</button>'
-			+			'<div class="xdialog-title"></div>'
-			+		'</div>'
-			+		'<div class="xdialog-body">'
-			+			'<div class="xdialog-content"></div>'
-			+		'</div>'
-			+		'<div class="xdialog-footer">'
-			+			'<div class="xdialog-button">'
-			// +				'<button class="">取消</button>'
-			// +				'<button class="">确定</button>'
-			+			'</div>'
-			+		'</div>'
-			+	'</div>'
+			+	'<table class="xdialog-main">'
+			+ 	'<tr>'
+			+			'<td class="xdialog-header">'
+			+				'<button class="xdialog-close">&#215;</button>'
+			+				'<div class="xdialog-title"></div>'
+			+			'</td>'
+			+ 	'</tr>'
+			+		'<tr>'
+			+			'<td class="xdialog-body">'
+			+				'<div class="xdialog-content"></div>'
+			+			'</td>'
+			+ 	'</tr>'
+			+		'<tr>'
+			+			'<td class="xdialog-footer">'
+			+				'<div class="xdialog-button">'
+			+				'</div>'
+			+			'</td>'
+			+		'</tr>'
+			+	'</table>'
 			+'</div>'
 
 	};
@@ -101,7 +127,7 @@
 		// cancel按钮
 		if (opt.cancel === true) {
 			opt.button.push({
-				className: 'xdialog-button-cancel',
+				className: 'cancel',
 				cancel: true,
 				text: opt.cancelText,
 				cb: opt.cancelCallback
@@ -111,7 +137,7 @@
 		// ok按钮
 		if (opt.ok === true) {
 			opt.button.push({
-				className: 'xdialog-button-ok',
+				className: 'ok',
 				ok: true,
 				text: opt.okText,
 				cb: opt.okCallback
@@ -140,11 +166,20 @@
 			.appendTo('body');
 
 		// 关闭按钮
+		console.log(this.opt.close);
 		this._popup.find('.xdialog-close')
-			.css({ 'display': this.close === false ? 'none' : '' })
+			.css({ 'display': this.opt.close === false ? 'none' : '' })
 			.on('click', function(event) {
 				that.close().remove();
 			});
+
+		// 按钮组点击
+		this._popup.on('click', '[data-type]', function(event) {
+			
+			var $this = $(this);
+			that.opt[$this.data('type') + 'Callback']();
+
+		});
 
 		// 如原型对象中有对应同名的setter，则调用setter
 		// 如没有，则添加这个属性
@@ -246,9 +281,11 @@
 			$.each(v, function(i, obj) {
 
 				html =
-					'<button class="'
+					'<button class="xdialog-button-'
 					+ obj.className
-					+ '">'
+					+ '" data-type="'
+					+ obj.className
+					+'"">'
 					+ obj.text
 					+ '</button>';
 
