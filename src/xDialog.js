@@ -165,8 +165,11 @@
 			})
 			.appendTo('body');
 
+
+		// 遮罩层，用于模态对话框
+		this._mask = $('<div />');
+
 		// 关闭按钮
-		console.log(this.opt.close);
 		this._popup.find('.xdialog-close')
 			.css({ 'display': this.opt.close === false ? 'none' : '' })
 			.on('click', function(event) {
@@ -200,7 +203,8 @@
 		// 显示弹窗
 		show: function(node) {
 			var that = this,
-					popup = this._popup;
+					popup = this._popup,
+					mask = this._mask;
 
 			this.node = node || this.node;
 
@@ -208,8 +212,13 @@
 				this.setBubble();
 			}
 
-			if (this.opt.type === 'message') {
+			if (this.opt.type === 'message' || this.opt.type === 'modal') {
 				this.center();
+			}
+
+			// 实现模态
+			if (this.opt.type === 'modal') {
+
 			}
 
 			popup.show();
@@ -274,7 +283,6 @@
 
 		// 设置按钮组
 		button: function(v) {
-			console.log('button', v);
 			var that = this,
 					html = '';
 
@@ -313,6 +321,12 @@
 		}
 
 	};
+
+	// 弹层集合
+	xDialog.group = {};
+
+	// 全局层叠高度配置
+	xDialog.zIndex = 8001;
 
 	window.xDialog = xDialog;
 
