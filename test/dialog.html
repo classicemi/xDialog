@@ -16,6 +16,7 @@
 		<button class="message-button">有按钮组弹窗</button>
 		<button class="message-quick-close">点击空白可关闭弹窗</button>
 		<button class="modal">模态弹窗</button>
+		<button class="modal-quick-close">点击空白可关闭模态弹窗</button>
 		<a href="#nogo" class="bubble">气泡</a>
 
 		<script src="../lib/jquery-1.10.2.js"></script>
@@ -59,7 +60,8 @@
 					content: '这是我的内容，这也是我的内容',
 					cancel: false,
 					ok: false,
-					close: false
+					close: false,
+					quickClose: true
 				});
 				d.show();
 			});
@@ -69,6 +71,16 @@
 					type: 'modal',
 					title: '这是我的标题',
 					content: '这是我的内容，这也是我的内容'
+				});
+				d.show();
+			});
+
+			$('.modal-quick-close').click(function() {
+				var d = xDialog({
+					type: 'modal',
+					title: '这是我的标题',
+					content: '这是我的内容，这也是我的内容',
+					quickClose: true
 				});
 				d.show();
 			});

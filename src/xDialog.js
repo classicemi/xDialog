@@ -58,6 +58,9 @@
 		// content高度
 		height: '',
 
+		// 遮罩层默认不透明度
+		maskOpacity: 0.5,
+
 		// 点击空白关闭
 		quickClose: false,
 
@@ -176,7 +179,6 @@
 				'width': '100%',
 				'height': '100%',
 				'overflow': 'hidden',
-				'opacity': '0.5',
 				'background': '#000'
 			});
 
@@ -194,6 +196,13 @@
 			that.opt[$this.data('type') + 'Callback']();
 
 		});
+
+		// 点击空白处关闭
+		if (this.opt.quickClose) {
+			this._mask.on('click', function() {
+				that.close().remove();
+			});
+		}
 
 		// 如原型对象中有对应同名的setter，则调用setter
 		// 如没有，则添加这个属性
@@ -220,22 +229,27 @@
 			this.node = node || this.node;
 
 			// 根据类型配置显示方法
-			if (this.opt.type === 'bubble') {
-				this.showBubble();
-			}
-
-			if (this.opt.type === 'message') {
-				this.showMessage();
-			}
-
-			if (this.opt.type === 'modal') {
+			// 要实现quickClose就需要遮罩层来接受click事件
+			if (this.opt.quickClose) {
 				this.showModal();
+			} else {
+				if (this.opt.type === 'modal') {
+					this.showModal();
+				}
+
+				if (this.opt.type === 'bubble') {
+					this.showBubble();
+				}
+
+				if (this.opt.type === 'message') {
+					this.showMessage();
+				}
 			}
+
 		},
 
 		// 显示气泡
 		showBubble: function() {
-			console.log(this);
 
 			return this;
 		},
@@ -260,7 +274,19 @@
 
 			this.center();
 
-			mask.css({zIndex: ++xDialog.zIndex}).appendTo('body').show();
+			// 根据modal判断遮罩层是否全透明
+			if (this.opt.type === 'modal') {
+				mask.css({
+					zIndex: ++xDialog.zIndex,
+					opacity: this.opt.maskOpacity
+				}).appendTo('body').show();
+			} else {
+				this.opt.maskOpacity = 0;
+				mask.css({
+					zIndex: ++xDialog.zIndex,
+					opacity: this.opt.maskOpacity
+				}).appendTo('body').show();
+			}
 			popup.css({zIndex: ++xDialog.zIndex}).show();
 
 			return this;
@@ -341,6 +367,7 @@
 		close: function() {
 
 			this._popup.hide();
+			this._mask.hide();
 
 			return this;
 
@@ -350,6 +377,7 @@
 		remove: function() {
 
 			this._popup.remove();
+			this._mask.remove();
 
 			return this;
 
