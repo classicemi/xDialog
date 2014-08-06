@@ -167,7 +167,18 @@
 
 
 		// 遮罩层，用于模态对话框
-		this._mask = $('<div />');
+		this._mask = $('<div />')
+			.css({
+				'display': 'none',
+				'position': 'fixed',
+				"top": 0,
+				'left': 0,
+				'width': '100%',
+				'height': '100%',
+				'overflow': 'hidden',
+				'opacity': '0.5',
+				'background': '#000'
+			});
 
 		// 关闭按钮
 		this._popup.find('.xdialog-close')
@@ -208,27 +219,51 @@
 
 			this.node = node || this.node;
 
+			// 根据类型配置显示方法
 			if (this.opt.type === 'bubble') {
-				this.setBubble();
+				this.showBubble();
 			}
 
-			if (this.opt.type === 'message' || this.opt.type === 'modal') {
-				this.center();
+			if (this.opt.type === 'message') {
+				this.showMessage();
 			}
 
-			// 实现模态
 			if (this.opt.type === 'modal') {
-				this.showMask();
+				this.showModal();
 			}
+		},
 
-			popup.show();
+		// 显示气泡
+		showBubble: function() {
+			console.log(this);
 
 			return this;
 		},
 
-		// 气泡定位
-		setBubble: function() {
-			console.log(this);
+		// 显示普通对话框
+		showMessage: function() {
+
+			var popup = this._popup;
+
+			this.center();
+
+			popup.css({zIndex: ++xDialog.zIndex}).show();
+
+			return this;
+		},
+
+		// 显示模态对话框
+		showModal: function() {
+
+			var popup = this._popup,
+					mask = this._mask;
+
+			this.center();
+
+			mask.css({zIndex: ++xDialog.zIndex}).appendTo('body').show();
+			popup.css({zIndex: ++xDialog.zIndex}).show();
+
+			return this;
 		},
 
 		// 居中定位
@@ -253,10 +288,6 @@
 			style.left = Math.max(parseInt(left), dl) + 'px';
 			style.top = Math.max(parseInt(top), dt) + 'px';
 
-		},
-
-		showMask: function() {
-			
 		},
 
 		// 设置标题
@@ -330,7 +361,7 @@
 	xDialog.group = {};
 
 	// 全局层叠高度配置
-	xDialog.zIndex = 8001;
+	xDialog.zIndex = 8000;
 
 	window.xDialog = xDialog;
 
