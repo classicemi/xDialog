@@ -1,16 +1,18 @@
 # TODO
-z-index setting review
+~~z-index setting review~~
+
+~~xDialog.group~~
+
+~~quick close~~
+
+~~event cache~~
 
 trigger
-
-xDialog.group
-
-quick close
 
 show logic IMPORTANT
 
 show animation
 
-~~event cache~~
-
 add event dispatch
+
+show bubble
