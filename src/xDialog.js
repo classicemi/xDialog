@@ -218,7 +218,7 @@
 
 			// 实现模态
 			if (this.opt.type === 'modal') {
-
+				this.showMask();
 			}
 
 			popup.show();
@@ -253,6 +253,10 @@
 			style.left = Math.max(parseInt(left), dl) + 'px';
 			style.top = Math.max(parseInt(top), dt) + 'px';
 
+		},
+
+		showMask: function() {
+			
 		},
 
 		// 设置标题
