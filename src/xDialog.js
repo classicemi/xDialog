@@ -64,6 +64,9 @@
 		// 点击空白关闭
 		quickClose: false,
 
+		// 事件缓存对象
+		eventCache: {},
+
 		// HTML结构
 		innerHTML:
 			// '<div class="xdialog">'
@@ -112,11 +115,14 @@
 	};
 
 	var $ = jQuery;
+	var initTime = new Date() - 0;
+	var count = 0;
 
 	// 外部调用的函数
 	var xDialog = function(options) {
 	
 		var opt = options || {};
+		var xDialogId = opt.xDialogId = initTime + count;
 
 		// 对opt进行一系列处理
 		// 处理options为字符串或元素类型的情况
@@ -148,7 +154,7 @@
 		}
 
 		// 调用实际的构造函数，传入opt
-		return new xDialog.create(opt);
+		return xDialog.group[xDialogId] = new xDialog.create(opt);
 
 	};
 
@@ -214,6 +220,11 @@
 			}
 		});
 
+		this.addEventListener('remove', function () {
+      delete xDialog.group[this.opt.xDialogId];
+    });
+
+    count++;
 		return this;
 
 	};
@@ -379,7 +390,40 @@
 			this._popup.remove();
 			this._mask.remove();
 
+			this.triggerCachedEvent('remove');
+
 			return this;
+
+		},
+
+		// 事件缓存相关方法
+		// 添加事件监听
+		addEventListener: function(eventType, cb) {
+			
+			var eventCache = this.opt.eventCache;
+
+			if (!eventCache[eventType]) {
+				eventCache[eventType] = [];
+				eventCache[eventType].push(cb);
+			} else {
+				eventCache[eventType].push(cb);
+			}
+			return this;
+
+		},
+
+		// 移除事件监听
+		removeEventListener: function() {
+
+		},
+
+		triggerCachedEvent: function(eventType) {
+
+			var cache = this.opt.eventCache[eventType];
+
+			for (var i = 0; i < cache.length; i++) {
+				cache[i].call(this);
+			}
 
 		}
 
