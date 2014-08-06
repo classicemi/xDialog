@@ -132,6 +132,12 @@
 
 		opt = $.extend(true, {}, defaultOptions, opt);
 
+		// 查找是否有同名xDialog对象
+		var existObj = xDialog.find(opt.xDialogId);
+		if (existObj) {
+			return existObj;
+		}
+
 		// 按钮组
 		// cancel按钮
 		if (opt.cancel === true) {
@@ -184,8 +190,7 @@
 				'left': 0,
 				'width': '100%',
 				'height': '100%',
-				'overflow': 'hidden',
-				'background': '#000'
+				'overflow': 'hidden'
 			});
 
 		// 关闭按钮
@@ -206,6 +211,7 @@
 		// 点击空白处关闭
 		if (this.opt.quickClose) {
 			this._mask.on('click', function() {
+				console.log('close')
 				that.close().remove();
 			});
 		}
@@ -240,33 +246,32 @@
 			this.node = node || this.node;
 
 			// 根据类型配置显示方法
-			// 要实现quickClose就需要遮罩层来接受click事件
+			// 要实现quick close就需要遮罩层来接受click事件
 			if (this.opt.quickClose) {
-				this.showModal();
-			} else {
-				if (this.opt.type === 'modal') {
-					this.showModal();
-				}
-
-				if (this.opt.type === 'bubble') {
-					this.showBubble();
-				}
-
-				if (this.opt.type === 'message') {
-					this.showMessage();
-				}
+				this.setMask();
 			}
+
+			this['show' + this.opt.type].call(this);
+
+		},
+
+		// 设置遮罩层
+		setMask: function() {
+
+			this._mask.css({
+				zIndex: ++xDialog.zIndex
+			}).appendTo('body').show();
 
 		},
 
 		// 显示气泡
-		showBubble: function() {
+		showbubble: function() {
 
 			return this;
 		},
 
 		// 显示普通对话框
-		showMessage: function() {
+		showmessage: function() {
 
 			var popup = this._popup;
 
@@ -278,26 +283,16 @@
 		},
 
 		// 显示模态对话框
-		showModal: function() {
+		showmodal: function() {
 
 			var popup = this._popup,
 					mask = this._mask;
 
 			this.center();
 
-			// 根据modal判断遮罩层是否全透明
-			if (this.opt.type === 'modal') {
-				mask.css({
-					zIndex: ++xDialog.zIndex,
-					opacity: this.opt.maskOpacity
-				}).appendTo('body').show();
-			} else {
-				this.opt.maskOpacity = 0;
-				mask.css({
-					zIndex: ++xDialog.zIndex,
-					opacity: this.opt.maskOpacity
-				}).appendTo('body').show();
-			}
+			mask.css({
+				background: 'rgba(0, 0, 0, ' + this.opt.maskOpacity + ')'
+			});
 			popup.css({zIndex: ++xDialog.zIndex}).show();
 
 			return this;
@@ -427,6 +422,11 @@
 
 		}
 
+	};
+
+	// 查找实例方法
+	xDialog.find = function(id) {
+		return xDialog.group[id];
 	};
 
 	// 弹层集合
