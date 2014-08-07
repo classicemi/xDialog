@@ -8,6 +8,88 @@
 			body {
 				background-color: #50A3D3;
 			}
+
+			.bubble-box {
+				position: absolute;
+				width: 120px;
+				height: 120px;
+				top: 50%;
+				left: 50%;
+				margin-top: -60px;
+				margin-left: -60px;
+				background: #ccc;
+				border: 1px solid #333;
+			}
+
+			.bubble-box input {
+				position: absolute;
+				width: 14px;
+				height: 14px;
+			}
+
+			.t {
+				top: 0;
+				left: 50%;
+				margin-left: -7px;
+			}
+
+			.tr {
+				top: 0;
+				right: 14px;
+			}
+
+			.rt {
+				top: 14px;
+				right: 0;
+			}
+
+			.r {
+				right: 0;
+				top: 50%;
+				margin-top: -7px;
+			}
+
+			.rb {
+				right: 0;
+				bottom: 14px;
+			}
+
+			.br {
+				bottom: 0;
+				right: 14px;
+			}
+
+			.b {
+				bottom: 0;
+				left: 50%;
+				margin-left: -7px;
+			}
+
+			.bl {
+				bottom: 0;
+				left: 14px;
+			}
+
+			.lb {
+				left: 0;
+				bottom: 14px;
+			}
+
+			.l {
+				left: 0;
+				top: 50%;
+				margin-top: -7px;
+			}
+
+			.lt {
+				left: 0;
+				top: 14px;
+			}
+
+			.tl {
+				top: 0;
+				left: 14px;
+			}
 		</style>
 	</head>
 	<body>
@@ -19,11 +101,41 @@
 		<button class="modal-quick-close">点击空白可关闭模态弹窗</button>
 		<a href="#nogo" class="bubble-click">气泡</a>
 
+		<div class="bubble-box">
+			<input name="bubble-input" type="radio" class="t" />
+			<input name="bubble-input" type="radio" class="tr" />
+			<input name="bubble-input" type="radio" class="rt" />
+			<input name="bubble-input" type="radio" class="r" />
+			<input name="bubble-input" type="radio" class="rb" />
+			<input name="bubble-input" type="radio" class="br" />
+			<input name="bubble-input" type="radio" class="b" />
+			<input name="bubble-input" type="radio" class="bl" />
+			<input name="bubble-input" type="radio" class="lb" />
+			<input name="bubble-input" type="radio" class="l" />
+			<input name="bubble-input" type="radio" class="lt" />
+			<input name="bubble-input" type="radio" class="tl" />
+		</div>
+
 		<script src="../lib/jquery-1.10.2.js"></script>
 		<script src="../src/xDialog.js"></script>
 		<script>
 			var ok = 'ok';
 			var cancel = 'cancel';
+
+			var align {
+				't': 'top',
+				'tr': 'top right',
+				'rt': 'right top',
+				'r': 'right',
+				'rb': 'right bottom',
+				'br': 'bottom right',
+				'b': 'bottom',
+				'bl': 'bottom left',
+				'lb': 'left bottom',
+				'l': 'left',
+				'lt': 'left top',
+				'tl': 'top left'
+			}
 
 			$('.message-no-button').click(function() {
 				var d = xDialog({
@@ -80,11 +192,12 @@
 			});
 
 			$('.bubble-click').click(function() {
-				var d = xDialog({
-					type: 'bubble',
-					
-				});
+
 			});
+
+			$('bubble-box input').click(function() {
+			});
+
 
 		</script>
 	</body>
