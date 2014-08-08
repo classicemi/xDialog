@@ -16,3 +16,5 @@ show animation
 add event dispatch
 
 show bubble
+
+bubble test
