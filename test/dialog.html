@@ -122,7 +122,7 @@
 			var ok = 'ok';
 			var cancel = 'cancel';
 
-			var align {
+			var align = {
 				't': 'top',
 				'tr': 'top right',
 				'rt': 'right top',
@@ -195,7 +195,15 @@
 
 			});
 
-			$('bubble-box input').click(function() {
+			$('.bubble-box input').click(function() {
+				var d = xDialog({
+					type: 'bubble',
+					title: '气泡不应该显示标题',
+					constent: '这是气泡的内容',
+					quickClose: 'true',
+					position: align[this.className]
+				});
+				d.show();
 			});
 
 
