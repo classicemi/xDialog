@@ -18,3 +18,5 @@ add event dispatch
 show bubble
 
 bubble test
+
+change quick close test into param
