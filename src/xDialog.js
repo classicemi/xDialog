@@ -69,48 +69,26 @@
 
 		// HTML结构
 		innerHTML:
-			// '<div class="xdialog">'
-			// + '<div class="xdialog-arrow-outer"></div>'
-			// + '<div class="xdialog-arrow-inner"></div>'
-			// +	'<div class="xdialog-main">'
-			// +		'<div class="xdialog-header">'
-			// +			'<button class="xdialog-close">&#215;</button>'
-			// +			'<div class="xdialog-title"></div>'
-			// +		'</div>'
-			// +		'<div class="xdialog-body">'
-			// +			'<div class="xdialog-content"></div>'
-			// +		'</div>'
-			// +		'<div class="xdialog-footer">'
-			// +			'<div class="xdialog-button">'
-			// // +				'<button class="">取消</button>'
-			// // +				'<button class="">确定</button>'
-			// +			'</div>'
-			// +		'</div>'
-			// +	'</div>'
-			// +'</div>'
-			'<div class="xdialog">'
-			+ '<div class="xdialog-arrow-outer"></div>'
-			+ '<div class="xdialog-arrow-inner"></div>'
-			+	'<table class="xdialog-main">'
-			+ 	'<tr>'
-			+			'<td class="xdialog-header">'
-			+				'<button class="xdialog-close">&#215;</button>'
-			+				'<div class="xdialog-title"></div>'
-			+			'</td>'
-			+ 	'</tr>'
-			+		'<tr>'
-			+			'<td class="xdialog-body">'
-			+				'<div class="xdialog-content"></div>'
-			+			'</td>'
-			+ 	'</tr>'
-			+		'<tr>'
-			+			'<td class="xdialog-footer">'
-			+				'<div class="xdialog-button">'
-			+				'</div>'
-			+			'</td>'
-			+		'</tr>'
-			+	'</table>'
-			+'</div>'
+		// '<div class="xdialog">'
+		// + '<div class="xdialog-arrow-outer"></div>'
+		// + '<div class="xdialog-arrow-inner"></div>'
+		// +	'<div class="xdialog-main">'
+		// +		'<div class="xdialog-header">'
+		// +			'<button class="xdialog-close">&#215;</button>'
+		// +			'<div class="xdialog-title"></div>'
+		// +		'</div>'
+		// +		'<div class="xdialog-body">'
+		// +			'<div class="xdialog-content"></div>'
+		// +		'</div>'
+		// +		'<div class="xdialog-footer">'
+		// +			'<div class="xdialog-button">'
+		// // +				'<button class="">取消</button>'
+		// // +				'<button class="">确定</button>'
+		// +			'</div>'
+		// +		'</div>'
+		// +	'</div>'
+		// +'</div>'
+		'<div class="xdialog">' + '<div class="xdialog-arrow-outer"></div>' + '<div class="xdialog-arrow-inner"></div>' + '<table class="xdialog-main">' + '<tr>' + '<td class="xdialog-header">' + '<button class="xdialog-close">&#215;</button>' + '<div class="xdialog-title"></div>' + '</td>' + '</tr>' + '<tr>' + '<td class="xdialog-body">' + '<div class="xdialog-content"></div>' + '</td>' + '</tr>' + '<tr>' + '<td class="xdialog-footer">' + '<div class="xdialog-button">' + '</div>' + '</td>' + '</tr>' + '</table>' + '</div>'
 
 	};
 
@@ -120,14 +98,16 @@
 
 	// 外部调用的函数
 	var xDialog = function(options) {
-	
+
 		var opt = options || {};
 		var xDialogId = opt.xDialogId = initTime + count;
 
 		// 对opt进行一系列处理
 		// 处理options为字符串或元素类型的情况
 		if (typeof opt === 'string' || opt.nodeType === 1) {
-			opt = { content: opt };
+			opt = {
+				content: opt
+			};
 		}
 
 		opt = $.extend(true, {}, defaultOptions, opt);
@@ -195,14 +175,16 @@
 
 		// 关闭按钮
 		this._popup.find('.xdialog-close')
-			.css({ 'display': this.opt.close === false ? 'none' : '' })
+			.css({
+				'display': this.opt.close === false ? 'none' : ''
+			})
 			.on('click', function(event) {
 				that.close().remove();
 			});
 
 		// 按钮组点击
 		this._popup.on('click', '[data-type]', function(event) {
-			
+
 			var $this = $(this);
 			that.opt[$this.data('type') + 'Callback']();
 
@@ -226,11 +208,11 @@
 			}
 		});
 
-		this.addEventListener('remove', function () {
-      delete xDialog.group[this.opt.xDialogId];
-    });
+		this.addEventListener('remove', function() {
+			delete xDialog.group[this.opt.xDialogId];
+		});
 
-    count++;
+		count++;
 		return this;
 
 	};
@@ -240,8 +222,8 @@
 		// 显示弹窗
 		show: function(node) {
 			var that = this,
-					popup = this._popup,
-					mask = this._mask;
+				popup = this._popup,
+				mask = this._mask;
 
 			this.node = node || this.node;
 
@@ -277,7 +259,9 @@
 
 			this.center();
 
-			popup.css({zIndex: ++xDialog.zIndex}).show();
+			popup.css({
+				zIndex: ++xDialog.zIndex
+			}).show();
 
 			return this;
 		},
@@ -286,35 +270,37 @@
 		showmodal: function() {
 
 			var popup = this._popup,
-					mask = this._mask;
+				mask = this._mask;
 
 			this.center();
 
 			mask.css({
 				background: 'rgba(0, 0, 0, ' + this.opt.maskOpacity + ')'
 			});
-			popup.css({zIndex: ++xDialog.zIndex}).show();
+			popup.css({
+				zIndex: ++xDialog.zIndex
+			}).show();
 
 			return this;
 		},
 
 		// 居中定位
 		center: function() {
-			
+
 			var popup = this._popup,
-					$window = $(window),
-					$document = $(document),
-					// position: fixed;时要加的偏移量
-					fixed = this.fixed,
-					dl = fixed ? 0 : $document.scrollLeft(),
-					dt = fixed ? 0 : $document.scrollTop(),
-					ww = $window.width(),
-					wh = $window.height(),
-					ow = popup.width(),
-					oh = popup.height(),
-					left = (ww - ow) / 2 + dl,
-					top = (wh - oh) * 382 / 1000 + dt, // 黄金比例
-					style = popup[0].style;
+				$window = $(window),
+				$document = $(document),
+				// position: fixed;时要加的偏移量
+				fixed = this.fixed,
+				dl = fixed ? 0 : $document.scrollLeft(),
+				dt = fixed ? 0 : $document.scrollTop(),
+				ww = $window.width(),
+				wh = $window.height(),
+				ow = popup.width(),
+				oh = popup.height(),
+				left = (ww - ow) / 2 + dl,
+				top = (wh - oh) * 382 / 1000 + dt, // 黄金比例
+				style = popup[0].style;
 
 			// 处理弹层超宽情况？
 			style.left = Math.max(parseInt(left), dl) + 'px';
@@ -351,18 +337,12 @@
 		// 设置按钮组
 		button: function(v) {
 			var that = this,
-					html = '';
+				html = '';
 
 			$.each(v, function(i, obj) {
 
 				html =
-					'<button class="xdialog-button-'
-					+ obj.className
-					+ '" data-type="'
-					+ obj.className
-					+'"">'
-					+ obj.text
-					+ '</button>';
+					'<button class="xdialog-button-' + obj.className + '" data-type="' + obj.className + '"">' + obj.text + '</button>';
 
 				that._popup.find('.xdialog-button')[0].innerHTML += html;
 
@@ -394,7 +374,7 @@
 		// 事件缓存相关方法
 		// 添加事件监听
 		addEventListener: function(eventType, cb) {
-			
+
 			var eventCache = this.opt.eventCache;
 
 			if (!eventCache[eventType]) {
